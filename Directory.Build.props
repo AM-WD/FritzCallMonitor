@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+
+    <PublicKey>0024000004800000940000000602000000240000525341310004000001000100d9b40f5db1670c563c2e8be5dfd24ed66ad811b3ebba8a0ca0df9cbad3a115ca361b3de4b4d4ed990bf9874d2651e62565f56adb33af33819687021e263b02d6bf5b3cdacde4f09650cafe97467de4b9e4e9cc1d6c2d500a08759697bbe80940916c05533d172ca7e55e10434f9cc46fd189f26cefc100781a20e57f1bad65d5</PublicKey>
+
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(SolutionDir)/FritzCallMonitor.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+</Project>

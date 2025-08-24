@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FritzCallMonitor", "src\FritzCallMonitor\FritzCallMonitor.csproj", "{9951D44E-9511-40D0-84C1-6A7344389A05}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C386CB98-2D60-4E40-B869-73053972BD28}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DC8CE4B0-4CDD-4162-9CCD-FE711BC86EAB}"
+	ProjectSection(SolutionItems) = preProject
+		test\Directory.Build.props = test\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FritzCallMonitor.Tests", "test\FritzCallMonitor.Tests\FritzCallMonitor.Tests.csproj", "{7C5920EA-F4A8-4446-9645-3484DB13BCBD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3DF1F30A-77F3-4F24-8739-CB89EE07BB8B}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{6FA27A08-FCE1-405E-A4A4-3A89FF4579F3}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		CodeMaid.config = CodeMaid.config
+		nuget.config = nuget.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B5851E79-416B-40CA-959C-ADCAFCC8BADB}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FritzCallMonitor.Demo", "src\FritzCallMonitor.Demo\FritzCallMonitor.Demo.csproj", "{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9951D44E-9511-40D0-84C1-6A7344389A05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9951D44E-9511-40D0-84C1-6A7344389A05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9951D44E-9511-40D0-84C1-6A7344389A05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9951D44E-9511-40D0-84C1-6A7344389A05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C5920EA-F4A8-4446-9645-3484DB13BCBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C5920EA-F4A8-4446-9645-3484DB13BCBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C5920EA-F4A8-4446-9645-3484DB13BCBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C5920EA-F4A8-4446-9645-3484DB13BCBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9951D44E-9511-40D0-84C1-6A7344389A05} = {C386CB98-2D60-4E40-B869-73053972BD28}
+		{7C5920EA-F4A8-4446-9645-3484DB13BCBD} = {DC8CE4B0-4CDD-4162-9CCD-FE711BC86EAB}
+		{3DF1F30A-77F3-4F24-8739-CB89EE07BB8B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6FA27A08-FCE1-405E-A4A4-3A89FF4579F3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B5851E79-416B-40CA-959C-ADCAFCC8BADB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D} = {C386CB98-2D60-4E40-B869-73053972BD28}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68E37BBB-3CC2-4B0B-8093-7F2F56345EF3}
+	EndGlobalSection
+EndGlobal
