@@ -18,7 +18,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		private bool _isDisposed;
 
 		private ILogger? _logger;
-		private readonly ReconnectTcpClient _client;
+		private readonly ReconnectTcpClient _tcpClient;
 		private readonly CancellationTokenSource _disposeCts;
 
 		private Task _monitorTask = Task.CompletedTask;
@@ -39,10 +39,10 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 				throw new ArgumentOutOfRangeException(nameof(port));
 
 			_disposeCts = new CancellationTokenSource();
-			_client = new ReconnectTcpClient(host, port) { OnConnected = OnConnected };
+			_tcpClient = new ReconnectTcpClient(host, port) { OnConnected = OnConnected };
 
 			// Start the client in the background
-			_client.StartAsync(_disposeCts.Token).Forget();
+			_tcpClient.StartAsync(_disposeCts.Token).Forget();
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 			set
 			{
 				_logger = value;
-				_client.Logger = value;
+				_tcpClient.Logger = value;
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 			catch
 			{ }
 
-			_client.Dispose();
+			_tcpClient.Dispose();
 			_disposeCts.Dispose();
 
 			GC.SuppressFinalize(this);
@@ -93,6 +93,8 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 
 		private Task OnConnected(ReconnectTcpClient client)
 		{
+			Logger?.LogTrace($"Client connected");
+
 			_monitorTask = Task.Run(async () =>
 			{
 				try

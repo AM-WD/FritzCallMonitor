@@ -1,0 +1,155 @@
+image: mcr.microsoft.com/dotnet/sdk:8.0
+
+variables:
+  TZ: "Europe/Berlin"
+  LANG: "de"
+
+stages:
+  - build
+  - test
+  - deploy
+
+
+
+debug-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  script:
+    - dotnet build -c Debug --nologo
+    - mkdir ./artifacts
+    - shopt -s globstar
+    - mv ./**/*.nupkg    ./artifacts/ || true
+    - mv ./**/*.snupkg   ./artifacts/ || true
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 days
+
+debug-test:
+  stage: test
+  dependencies:
+    - debug-build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  coverage: /Branch coverage[\s\S].+%/
+  before_script:
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
+  script:
+    - dotnet test -c Debug --nologo /p:CoverletOutputFormat=Cobertura
+    - /dotnet-tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/coverage.cobertura.xml" "-targetdir:/reports" -reportType:TextSummary
+    - cat /reports/Summary.txt
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+debug-deploy:
+  stage: deploy
+  dependencies:
+    - debug-build
+    - debug-test
+  tags:
+    - docker
+    - lnx
+    - server
+  rules:
+    - if: $CI_COMMIT_TAG == null
+  script:
+    - dotnet nuget push -k $BAGET_APIKEY -s https://nuget.am-wd.de/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+
+
+
+release-build:
+  stage: build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG != null
+  script:
+    - dotnet build -c Release --nologo
+    - mkdir ./artifacts
+    - shopt -s globstar
+    - mv ./**/*.nupkg    ./artifacts/ || true
+    - mv ./**/*.snupkg   ./artifacts/ || true
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+    expire_in: 1 days
+
+release-test:
+  stage: test
+  dependencies:
+    - release-build
+  tags:
+    - docker
+    - lnx
+    - 64bit
+  rules:
+    - if: $CI_COMMIT_TAG != null
+  before_script:
+    - dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
+  script:
+    - dotnet test -c Release --nologo /p:CoverletOutputFormat=Cobertura
+    - /dotnet-tools/reportgenerator "-reports:${CI_PROJECT_DIR}/**/coverage.cobertura.xml" "-targetdir:/reports" -reportType:TextSummary
+    - cat /reports/Summary.txt
+  artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: ./**/coverage.cobertura.xml
+
+release-deploy:
+  stage: deploy
+  dependencies:
+    - release-build
+    - release-test
+  tags:
+    - docker
+    - lnx
+    - server
+  rules:
+    - if: $CI_COMMIT_TAG != null
+  script:
+    - dotnet nuget push -k $NUGET_APIKEY -s https://api.nuget.org/v3/index.json --skip-duplicate artifacts/*.nupkg || true
+
+
+
+publish-docs:
+  variables:
+    DOCFX_SOURCE_REPOSITORY_URL: "https://github.com/AM-WD/FritzCallMonitor"
+  stage: deploy
+  tags:
+    - docker
+    - lnx
+    - server
+  rules:
+    - if: $CI_COMMIT_TAG != null
+  before_script:
+    - apt-get update
+    - apt-get -y install zip unzip
+    - dotnet tool install docfx --tool-path /dotnet-tools
+  script:
+    # Build the docs
+    - dotnet build -c Release --nologo
+    - /dotnet-tools/docfx metadata docs/docfx.json
+    - /dotnet-tools/docfx build docs/docfx.json
+    # Deploy the docs
+    - cd docs/_site
+    - zip -r ../docs.zip *
+    - curl --user "$DOCS_DEPLOY_USER:$DOCS_DEPLOY_PASS" -F docs=fritzcallmonitor -F dump=@../docs.zip "$DOCS_DEPLOY_URL"
