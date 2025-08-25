@@ -24,10 +24,10 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 		public ReconnectTcpClient(string host, int port)
 		{
 			if (string.IsNullOrWhiteSpace(host))
-				throw new ArgumentNullException(nameof(host), "The host is required.");
+				throw new ArgumentNullException(nameof(host));
 
-			if (port <= ushort.MinValue || ushort.MaxValue < port)
-				throw new ArgumentOutOfRangeException(nameof(port), $"The port must be between {ushort.MinValue + 1} and {ushort.MaxValue}.");
+			if (port < 1 || 65535 < port)
+				throw new ArgumentOutOfRangeException(nameof(port));
 
 			_host = host;
 			_port = port;
@@ -98,7 +98,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 
 				_tcpClient?.Dispose();
 				_tcpClient = null;
-			});
+			}, cancellationToken);
 
 			try
 			{
@@ -127,13 +127,13 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 						_tcpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
 #if NET6_0_OR_GREATER
-						var connectTask = _tcpClient.ConnectAsync(_host, _port, cancellationToken);
+						await _tcpClient.ConnectAsync(_host, _port, cancellationToken).ConfigureAwait(false);
 #else
 						var connectTask = _tcpClient.ConnectAsync(_host, _port);
-#endif
-						var completedTask = await Task.WhenAny(connectTask, Task.Delay(1000, cancellationToken)).ConfigureAwait(false);
+						var completedTask = await Task.WhenAny(connectTask, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
 						if (completedTask != connectTask)
-							throw new TimeoutException("Connection attempt timed out.");
+							throw new OperationCanceledException("Connection attempt was canceled.", cancellationToken);
+#endif
 
 						if (OnConnected != null)
 							await OnConnected(this).ConfigureAwait(false);
@@ -176,34 +176,26 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 				byte[] buffer = new byte[1];
 				while (!cancellationToken.IsCancellationRequested && !_isDisposed)
 				{
-					if (!IsConnected)
+					if (_tcpClient == null || !IsConnected)
 					{
 						await ConnectWithRetryAsync(cancellationToken).ConfigureAwait(false);
 						continue;
 					}
 
-					var stream = _tcpClient?.GetStream();
-					if (stream != null && stream.CanRead)
+					var stream = _tcpClient.GetStream();
+					bool disconnected = false;
+					try
 					{
-						bool disconnected = false;
-						try
-						{
-							// Attempt to read zero bytes to check if the connection is still alive.
-							// Should return immediately if the connection is still active.
-							// So the timeout of 1sec is more than enough.
-							var readTask = stream.ReadAsync(buffer, 0, 0, cancellationToken);
-							var completedTask = await Task.WhenAny(readTask, Task.Delay(1000, cancellationToken)).ConfigureAwait(false);
-							if (completedTask != readTask)
-								continue; // Timeout
-						}
-						catch
-						{
-							disconnected = true;
-						}
-
-						if (disconnected || !IsConnected)
-							await ConnectWithRetryAsync(cancellationToken).ConfigureAwait(false);
+						// Attempt to read zero bytes to check if the connection is still alive.
+						await stream.ReadAsync(buffer, 0, 0, cancellationToken);
 					}
+					catch
+					{
+						disconnected = true;
+					}
+
+					if (disconnected)
+						await ConnectWithRetryAsync(cancellationToken).ConfigureAwait(false);
 
 					// Check for an active connection every 5 seconds.
 					await Task.Delay(5000, cancellationToken).ConfigureAwait(false);

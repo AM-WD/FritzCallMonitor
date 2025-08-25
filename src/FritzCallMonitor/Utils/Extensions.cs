@@ -6,6 +6,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 {
 	internal static class Extensions
 	{
+		[System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
 		public static async void Forget(this Task task, ILogger? logger = null)
 		{
 			try

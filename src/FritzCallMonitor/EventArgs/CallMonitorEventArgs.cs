@@ -90,6 +90,9 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 					args.CalleeNumber = columns[4];
 					args.CallerNumber = columns[5];
 					break;
+
+				default:
+					return null;
 			}
 
 			return args;
