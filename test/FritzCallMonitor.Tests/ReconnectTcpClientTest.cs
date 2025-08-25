@@ -81,16 +81,21 @@ namespace FritzCallMonitor.Tests
 			// Arrange
 			var client = GetClient();
 			await client.StartAsync(TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
 
 			// Act
 			client.Dispose();
 
 			// Assert
-			_tcpClientMock.Verify(m => m.Dispose(), Times.Once);
+			_socketMock.Verify(m => m.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true), Times.Once);
+
 			_tcpClientMock.VerifyGet(m => m.Client, Times.Once);
+			_tcpClientMock.VerifyGet(m => m.Connected, Times.Once);
+			_tcpClientMock.Verify(m => m.GetStream(), Times.Once);
+			_tcpClientMock.Verify(m => m.Dispose(), Times.Once);
 			_tcpClientMock.Verify(m => m.ConnectAsync(HOST, PORT, It.IsAny<CancellationToken>()), Times.Once);
 
-			_socketMock.Verify(m => m.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true), Times.Once);
+			_networkStreamMock.Verify(m => m.ReadAsync(It.IsAny<byte[]>(), 0, It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
 
 			VerifyNoOtherCalls();
 		}
@@ -101,17 +106,22 @@ namespace FritzCallMonitor.Tests
 			// Arrange
 			using var client = GetClient();
 			await client.StartAsync(TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
 
 			// Act
 			client.Dispose();
 			client.Dispose();
 
 			// Assert
-			_tcpClientMock.Verify(m => m.Dispose(), Times.Once);
+			_socketMock.Verify(m => m.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true), Times.Once);
+
 			_tcpClientMock.VerifyGet(m => m.Client, Times.Once);
+			_tcpClientMock.VerifyGet(m => m.Connected, Times.Once);
+			_tcpClientMock.Verify(m => m.GetStream(), Times.Once);
+			_tcpClientMock.Verify(m => m.Dispose(), Times.Once);
 			_tcpClientMock.Verify(m => m.ConnectAsync(HOST, PORT, It.IsAny<CancellationToken>()), Times.Once);
 
-			_socketMock.Verify(m => m.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true), Times.Once);
+			_networkStreamMock.Verify(m => m.ReadAsync(It.IsAny<byte[]>(), 0, It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
 
 			VerifyNoOtherCalls();
 		}
