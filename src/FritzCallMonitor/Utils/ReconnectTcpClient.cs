@@ -46,6 +46,10 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 
 			_isDisposed = true;
 
+			// Ensure no connection attempts are running
+			_connectLock.WaitAsync().Wait();
+
+			// Stop the client
 			StopAsyncInternally(CancellationToken.None).Wait();
 
 			_connectLock.Dispose();
@@ -84,6 +88,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor.Utils
 			var stopTask = Task.Run(async () =>
 			{
 				_stopCts?.Cancel();
+
 				try
 				{
 					await _monitorTask.ConfigureAwait(false);

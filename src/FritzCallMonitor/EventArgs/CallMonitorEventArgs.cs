@@ -24,7 +24,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		public int? ConnectionId { get; private set; }
 
 		/// <summary>
-		/// Gets the line / port of signaled.
+		/// Gets the signaled line / port.
 		/// </summary>
 		public int? LinePort { get; private set; }
 
@@ -39,7 +39,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		public string? CalleeNumber { get; private set; }
 
 		/// <summary>
-		/// Gets the duarion of the call (only on <see cref="EventType.Disconnect"/> event).
+		/// Gets the duration of the call (only on <see cref="EventType.Disconnect"/> event).
 		/// </summary>
 		public TimeSpan? Duration { get; private set; }
 

@@ -26,11 +26,11 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CallMonitorClient"/> class.
 		/// </summary>
-		/// <param name="host">The hostname or IP address of the FRITZ!Box to monitor.</param>
+		/// <param name="host">The hostname or IP address of the FRITZ!Box to monitor (Default: fritz.box).</param>
 		/// <param name="port">The port to connect to (Default: 1012).</param>
-		/// <exception cref="ArgumentNullException">The hostname is not set.</exception>
-		/// <exception cref="ArgumentOutOfRangeException">The port is not in valid range of 1 to 65535.</exception>
-		public CallMonitorClient(string host, int port = 1012)
+		/// <exception cref="ArgumentNullException">Thrown if the <paramref name="host"/> is not set.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="port"/>is not in a valid range of 1 to 65535.</exception>
+		public CallMonitorClient(string host = "fritz.box", int port = 1012)
 		{
 			if (string.IsNullOrWhiteSpace(host))
 				throw new ArgumentNullException(nameof(host));
