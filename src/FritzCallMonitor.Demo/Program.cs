@@ -44,11 +44,11 @@ namespace FritzCallMonitor.Demo
 					switch (e.Event)
 					{
 						case EventType.Ring:
-							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Incoming Call from {e.CallerNumber} to {e.CalleeNumber}");
+							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Incoming Call from {e.ExternalNumber} to {e.InternalNumber}");
 							break;
 
 						case EventType.Connect:
-							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Call connected to {e.CallerNumber}");
+							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Call connected to {e.ExternalNumber}");
 							break;
 
 						case EventType.Disconnect:
@@ -56,7 +56,7 @@ namespace FritzCallMonitor.Demo
 							break;
 
 						case EventType.Call:
-							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Outgoing Call from {e.CalleeNumber} to {e.CallerNumber}");
+							Console.WriteLine($"{e.Timestamp:yyyy-MM-dd HH:mm:ss K} | #{e.ConnectionId} | Outgoing Call from {e.InternalNumber} to {e.ExternalNumber}");
 							break;
 					}
 				};

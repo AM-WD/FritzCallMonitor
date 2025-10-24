@@ -166,8 +166,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Ring, eventArgs.Event);
 			Assert.AreEqual(2, eventArgs.ConnectionId);
 			Assert.IsNull(eventArgs.LinePort);
-			Assert.AreEqual("012345678901", eventArgs.CallerNumber);
-			Assert.AreEqual("9876543", eventArgs.CalleeNumber);
+			Assert.AreEqual("012345678901", eventArgs.ExternalNumber);
+			Assert.AreEqual("9876543", eventArgs.InternalNumber);
 			Assert.IsNull(eventArgs.Duration);
 
 			_tcpClientMock.VerifyGet(m => m.IsConnected, Times.Exactly(2));
@@ -209,8 +209,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Ring, eventArgs.Event);
 			Assert.AreEqual(2, eventArgs.ConnectionId);
 			Assert.IsNull(eventArgs.LinePort);
-			Assert.AreEqual("012345678901", eventArgs.CallerNumber);
-			Assert.AreEqual("9876543", eventArgs.CalleeNumber);
+			Assert.AreEqual("012345678901", eventArgs.ExternalNumber);
+			Assert.AreEqual("9876543", eventArgs.InternalNumber);
 			Assert.IsNull(eventArgs.Duration);
 
 			_tcpClientMock.VerifyGet(m => m.IsConnected, Times.Exactly(3));

@@ -29,8 +29,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Ring, result.Event);
 			Assert.AreEqual(2, result.ConnectionId);
 			Assert.IsNull(result.LinePort);
-			Assert.AreEqual("012345678901", result.CallerNumber);
-			Assert.AreEqual("9876543", result.CalleeNumber);
+			Assert.AreEqual("012345678901", result.ExternalNumber);
+			Assert.AreEqual("9876543", result.InternalNumber);
 			Assert.IsNull(result.Duration);
 		}
 
@@ -45,8 +45,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Connect, result.Event);
 			Assert.AreEqual(1, result.ConnectionId);
 			Assert.AreEqual(3, result.LinePort);
-			Assert.AreEqual("012345678901", result.CallerNumber);
-			Assert.IsNull(result.CalleeNumber);
+			Assert.AreEqual("012345678901", result.ExternalNumber);
+			Assert.IsNull(result.InternalNumber);
 			Assert.IsNull(result.Duration);
 		}
 
@@ -61,8 +61,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Disconnect, result.Event);
 			Assert.AreEqual(2, result.ConnectionId);
 			Assert.IsNull(result.LinePort);
-			Assert.IsNull(result.CallerNumber);
-			Assert.IsNull(result.CalleeNumber);
+			Assert.IsNull(result.ExternalNumber);
+			Assert.IsNull(result.InternalNumber);
 			Assert.AreEqual(TimeSpan.FromSeconds(42), result.Duration);
 		}
 
@@ -77,8 +77,8 @@ namespace FritzCallMonitor.Tests
 			Assert.AreEqual(EventType.Call, result.Event);
 			Assert.AreEqual(4, result.ConnectionId);
 			Assert.AreEqual(7, result.LinePort);
-			Assert.AreEqual("012345678901", result.CallerNumber);
-			Assert.AreEqual("9876543", result.CalleeNumber);
+			Assert.AreEqual("012345678901", result.ExternalNumber);
+			Assert.AreEqual("9876543", result.InternalNumber);
 			Assert.IsNull(result.Duration);
 		}
 
@@ -147,8 +147,8 @@ namespace FritzCallMonitor.Tests
 			string line = "25.08.25 20:15:30;RING;2;012345678901;9876543;SIP0;EXTRA;COLUMN;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNotNull(result);
-			Assert.AreEqual("012345678901", result.CallerNumber);
-			Assert.AreEqual("9876543", result.CalleeNumber);
+			Assert.AreEqual("012345678901", result.ExternalNumber);
+			Assert.AreEqual("9876543", result.InternalNumber);
 		}
 	}
 }

@@ -31,12 +31,12 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		/// <summary>
 		/// Gets the external number displayed in the FRITZ!Box.
 		/// </summary>
-		public string? CallerNumber { get; private set; }
+		public string? ExternalNumber { get; private set; }
 
 		/// <summary>
 		/// Gets the internal number registered in the FRITZ!Box.
 		/// </summary>
-		public string? CalleeNumber { get; private set; }
+		public string? InternalNumber { get; private set; }
 
 		/// <summary>
 		/// Gets the duration of the call (only on <see cref="EventType.Disconnect"/> event).
@@ -71,13 +71,13 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 			switch (eventType)
 			{
 				case EventType.Ring:
-					args.CallerNumber = columns[3];
-					args.CalleeNumber = columns[4];
+					args.ExternalNumber = columns[3];
+					args.InternalNumber = columns[4];
 					break;
 
 				case EventType.Connect:
 					args.LinePort = int.TryParse(columns[3], out int connectLinePort) ? connectLinePort : null;
-					args.CallerNumber = columns[4];
+					args.ExternalNumber = columns[4];
 					break;
 
 				case EventType.Disconnect:
@@ -87,8 +87,8 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 
 				case EventType.Call:
 					args.LinePort = int.TryParse(columns[3], out int callLinePort) ? callLinePort : null;
-					args.CalleeNumber = columns[4];
-					args.CallerNumber = columns[5];
+					args.InternalNumber = columns[4];
+					args.ExternalNumber = columns[5];
 					break;
 
 				default:
