@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_No changes_
+
+
+## [v0.1.2] - 2025-11-08
+
 ### Changed
 
-- Made things `virtual` for mocking purposes in other projects
+- Public elements are now `virtual` to allow mocking in unit tests
 
 
 ## [v0.1.1] - 2025-10-24
@@ -38,7 +43,8 @@ _Inital release_
 
 
 
-[Unreleased]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.2...HEAD
 
+[v0.1.2]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.0...v0.1.1
 [v0.1.0]: https://github.com/AM-WD/FritzCallMonitor/commits/v0.1.0
