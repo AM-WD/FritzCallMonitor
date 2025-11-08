@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_nothing changed yet_
+### Changed
+
+- Made things `virtual` for mocking purposes in other projects
 
 
 ## [v0.1.1] - 2025-10-24

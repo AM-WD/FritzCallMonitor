@@ -51,12 +51,12 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		/// <remarks>
 		/// The event provides details using the <see cref="CallMonitorEventArgs"/> parameter.
 		/// </remarks>
-		public event EventHandler<CallMonitorEventArgs>? OnEvent;
+		public virtual event EventHandler<CallMonitorEventArgs>? OnEvent;
 
 		/// <summary>
 		/// Gets or sets a logger instance.
 		/// </summary>
-		public ILogger? Logger
+		public virtual ILogger? Logger
 		{
 			get => _logger;
 			set
@@ -69,7 +69,7 @@ namespace AMWD.Net.Api.Fritz.CallMonitor
 		/// <summary>
 		/// Releases all resources used by the current instance of the <see cref="CallMonitorClient"/>.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
 			if (_isDisposed)
 				return;

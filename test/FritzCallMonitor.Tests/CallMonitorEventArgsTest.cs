@@ -8,10 +8,12 @@ namespace FritzCallMonitor.Tests
 	{
 		private string _dateOffset;
 
+		private readonly DateTime NOW = new(2025, 8, 25, 20, 15, 30, DateTimeKind.Local);
+
 		[TestInitialize]
 		public void Initialize()
 		{
-			var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+			var offset = TimeZoneInfo.Local.GetUtcOffset(NOW);
 			_dateOffset = offset < TimeSpan.Zero
 				? "-" + offset.ToString("hh\\:mm")
 				: "+" + offset.ToString("hh\\:mm");
@@ -21,7 +23,7 @@ namespace FritzCallMonitor.Tests
 		public void ShouldParseRingEvent()
 		{
 			// Arrange
-			string line = "25.08.25 20:15:30;RING;2;012345678901;9876543;SIP0;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;";
 			var result = CallMonitorEventArgs.Parse(line);
 
 			Assert.IsNotNull(result);
@@ -37,7 +39,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldParseConnectEvent()
 		{
-			string line = "25.08.25 20:15:30;CONNECT;1;3;012345678901;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};CONNECT;1;3;012345678901;";
 			var result = CallMonitorEventArgs.Parse(line);
 
 			Assert.IsNotNull(result);
@@ -53,7 +55,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldParseDisconnectEvent()
 		{
-			string line = "25.08.25 20:15:30;DISCONNECT;2;42;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};DISCONNECT;2;42;";
 			var result = CallMonitorEventArgs.Parse(line);
 
 			Assert.IsNotNull(result);
@@ -69,7 +71,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldParseCallEvent()
 		{
-			string line = "25.08.25 20:15:30;CALL;4;7;9876543;012345678901;SIP0;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};CALL;4;7;9876543;012345678901;SIP0;";
 			var result = CallMonitorEventArgs.Parse(line);
 
 			Assert.IsNotNull(result);
@@ -93,7 +95,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldReturnNullOnUnknownEventType()
 		{
-			string line = "25.08.25 20:15:30;UNKNOWN;2;012345678901;9876543;SIP0;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};UNKNOWN;2;012345678901;9876543;SIP0;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNull(result);
 		}
@@ -101,7 +103,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldReturnNullOnInvalidConnectionId()
 		{
-			string line = "25.08.25 20:15:30;RING;abc;012345678901;9876543;SIP0;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};RING;abc;012345678901;9876543;SIP0;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNull(result);
 		}
@@ -109,7 +111,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldHandleInvalidLinePortInConnect()
 		{
-			string line = "25.08.25 20:15:30;CONNECT;1;abc;012345678901;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};CONNECT;1;abc;012345678901;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNotNull(result);
 			Assert.IsNull(result.LinePort);
@@ -118,7 +120,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldHandleInvalidLinePortInCall()
 		{
-			string line = "25.08.25 20:15:30;CALL;4;abc;9876543;012345678901;SIP0;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};CALL;4;abc;9876543;012345678901;SIP0;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNotNull(result);
 			Assert.IsNull(result.LinePort);
@@ -127,7 +129,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldHandleInvalidDurationInDisconnect()
 		{
-			string line = "25.08.25 20:15:30;DISCONNECT;2;abc;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};DISCONNECT;2;abc;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNotNull(result);
 			Assert.IsNull(result.Duration);
@@ -136,7 +138,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldReturnNullOnTooFewColumns()
 		{
-			string line = "25.08.25 20:15:30;RING;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};RING;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNull(result);
 		}
@@ -144,7 +146,7 @@ namespace FritzCallMonitor.Tests
 		[TestMethod]
 		public void ShouldParseWithExtraColumns()
 		{
-			string line = "25.08.25 20:15:30;RING;2;012345678901;9876543;SIP0;EXTRA;COLUMN;";
+			string line = $"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;EXTRA;COLUMN;";
 			var result = CallMonitorEventArgs.Parse(line);
 			Assert.IsNotNull(result);
 			Assert.AreEqual("012345678901", result.ExternalNumber);

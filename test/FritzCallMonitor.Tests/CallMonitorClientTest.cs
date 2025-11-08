@@ -21,6 +21,7 @@ namespace FritzCallMonitor.Tests
 
 		private const string HOST = "localhost";
 		private const int PORT = 1012;
+		private readonly DateTime NOW = new(2025, 8, 25, 20, 15, 30, DateTimeKind.Local);
 
 		private string _dateOffset;
 
@@ -34,7 +35,7 @@ namespace FritzCallMonitor.Tests
 		[TestInitialize]
 		public void Initialize()
 		{
-			var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+			var offset = TimeZoneInfo.Local.GetUtcOffset(NOW);
 			_dateOffset = offset < TimeSpan.Zero
 				? "-" + offset.ToString("hh\\:mm")
 				: "+" + offset.ToString("hh\\:mm");
@@ -43,7 +44,7 @@ namespace FritzCallMonitor.Tests
 
 			_readAsyncResponses = new Queue<(int, byte[])>();
 
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("25.08.25 20:15:30;RING;2;012345678901;9876543;SIP0;\r\n")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 		}
 
@@ -184,7 +185,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("25.08.25 20:15:30;RING;")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("2;012345678901;9876543;SIP0;\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
@@ -227,7 +228,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("25.08.25 20:15:30;RING;2;012345678901;9876543;SIP0;\n25.08.25 20:15:30")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\n{NOW:dd.MM.yy HH:mm:ss}")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes(";RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
@@ -259,7 +260,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("25.08.25 20:15:30;TEST;2;012345678901;9876543;SIP0;\n25.08.25 20:15:30")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};TEST;2;012345678901;9876543;SIP0;\n{NOW:dd.MM.yy HH:mm:ss}")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes(";RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
