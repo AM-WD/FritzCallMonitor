@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <CollectCoverage>true</CollectCoverage>
@@ -20,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="AMWD.Net.Api.Fritz.CallMonitor" />
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+    <Using Include="Moq" />
   </ItemGroup>
 
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)\..'))" />

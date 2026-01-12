@@ -4,11 +4,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AMWD.Net.Api.Fritz.CallMonitor;
 using AMWD.Net.Api.Fritz.CallMonitor.Utils;
 using AMWD.Net.Api.Fritz.CallMonitor.Wrappers;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace FritzCallMonitor.Tests
 {
@@ -21,10 +19,9 @@ namespace FritzCallMonitor.Tests
 
 		private const string HOST = "localhost";
 		private const int PORT = 1012;
-		private readonly DateTime NOW = new(2025, 8, 25, 20, 15, 30, DateTimeKind.Local);
+		private readonly DateTime _now = new(2025, 8, 25, 20, 15, 30, DateTimeKind.Local);
 
 		private string _dateOffset;
-
 
 		private Mock<ReconnectTcpClient> _tcpClientMock;
 		private Mock<NetworkStreamWrapper> _networkStreamMock;
@@ -35,7 +32,7 @@ namespace FritzCallMonitor.Tests
 		[TestInitialize]
 		public void Initialize()
 		{
-			var offset = TimeZoneInfo.Local.GetUtcOffset(NOW);
+			var offset = TimeZoneInfo.Local.GetUtcOffset(_now);
 			_dateOffset = offset < TimeSpan.Zero
 				? "-" + offset.ToString("hh\\:mm")
 				: "+" + offset.ToString("hh\\:mm");
@@ -44,7 +41,7 @@ namespace FritzCallMonitor.Tests
 
 			_readAsyncResponses = new Queue<(int, byte[])>();
 
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\r\n")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{_now:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 		}
 
@@ -83,7 +80,7 @@ namespace FritzCallMonitor.Tests
 			// Arrange
 			var loggerMock = new Mock<ILogger>();
 			var client = GetClient();
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act
 			client.Logger = loggerMock.Object;
@@ -107,7 +104,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			var client = GetClient();
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act
 			client.Dispose();
@@ -131,7 +128,7 @@ namespace FritzCallMonitor.Tests
 			_tcpClientMock.Setup(m => m.GetStream()).Returns((NetworkStreamWrapper)null);
 
 			// Act
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			client.Dispose();
 
 			// Assert
@@ -156,7 +153,7 @@ namespace FritzCallMonitor.Tests
 			};
 
 			// Act
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			client.Dispose();
 
 			// Assert
@@ -185,7 +182,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{_now:dd.MM.yy HH:mm:ss};RING;")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes("2;012345678901;9876543;SIP0;\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
@@ -199,7 +196,7 @@ namespace FritzCallMonitor.Tests
 			};
 
 			// Act
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			client.Dispose();
 
 			// Assert
@@ -228,7 +225,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\n{NOW:dd.MM.yy HH:mm:ss}")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{_now:dd.MM.yy HH:mm:ss};RING;2;012345678901;9876543;SIP0;\n{_now:dd.MM.yy HH:mm:ss}")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes(";RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
@@ -240,7 +237,7 @@ namespace FritzCallMonitor.Tests
 			};
 
 			// Act
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			client.Dispose();
 
 			// Assert
@@ -260,7 +257,7 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			_readAsyncResponses.Clear();
-			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{NOW:dd.MM.yy HH:mm:ss};TEST;2;012345678901;9876543;SIP0;\n{NOW:dd.MM.yy HH:mm:ss}")));
+			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes($"{_now:dd.MM.yy HH:mm:ss};TEST;2;012345678901;9876543;SIP0;\n{_now:dd.MM.yy HH:mm:ss}")));
 			_readAsyncResponses.Enqueue((0, Encoding.UTF8.GetBytes(";RING;2;012345678901;9876543;SIP0;\r\n")));
 			_readAsyncResponses.Enqueue((Timeout.Infinite, Array.Empty<byte>()));
 
@@ -272,7 +269,7 @@ namespace FritzCallMonitor.Tests
 			};
 
 			// Act
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			client.Dispose();
 
 			// Assert
@@ -328,9 +325,9 @@ namespace FritzCallMonitor.Tests
 			tcpClientField.SetValue(client, _tcpClientMock.Object);
 
 			var onConnectedMethodInfo = client.GetType().GetMethod("OnConnected", BindingFlags.NonPublic | BindingFlags.Instance);
-			_tcpClientMock.SetupGet(c => c.OnConnected).Returns((Func<ReconnectTcpClient, Task>)onConnectedMethodInfo.CreateDelegate(typeof(Func<ReconnectTcpClient, Task>), client));
+			_tcpClientMock.SetupGet(c => c.OnConnected).Returns(onConnectedMethodInfo.CreateDelegate<Func<ReconnectTcpClient, Task>>(client));
 
-			_tcpClientMock.Object.OnConnected(_tcpClientMock.Object).Wait();
+			_tcpClientMock.Object.OnConnected(_tcpClientMock.Object).Wait(TestContext.CancellationToken);
 			return client;
 		}
 	}

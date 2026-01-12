@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AMWD.Net.Api.Fritz.CallMonitor.Utils;
 using AMWD.Net.Api.Fritz.CallMonitor.Wrappers;
 using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace FritzCallMonitor.Tests
 {
@@ -80,8 +79,8 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			var client = GetClient();
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act
 			client.Dispose();
@@ -105,8 +104,8 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			using var client = GetClient();
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act
 			client.Dispose();
@@ -134,7 +133,7 @@ namespace FritzCallMonitor.Tests
 			client.Dispose();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () => await client.StartAsync(TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () => await client.StartAsync(TestContext.CancellationToken));
 
 			VerifyNoOtherCalls();
 		}
@@ -147,7 +146,7 @@ namespace FritzCallMonitor.Tests
 			client.Dispose();
 
 			// Act & Assert
-			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () => await client.StopAsync(TestContext.CancellationTokenSource.Token));
+			await Assert.ThrowsExactlyAsync<ObjectDisposedException>(async () => await client.StopAsync(TestContext.CancellationToken));
 
 			VerifyNoOtherCalls();
 		}
@@ -172,8 +171,8 @@ namespace FritzCallMonitor.Tests
 			_tcpClientConnectTaskDelays.Enqueue(Timeout.Infinite);
 
 			var client = GetClient();
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act & Assert
 			_tcpClientConnected = true;
@@ -208,10 +207,10 @@ namespace FritzCallMonitor.Tests
 			};
 
 			// Act
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
+			await client.StopAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Assert
 			Assert.IsTrue(callbackCalled);
@@ -236,10 +235,10 @@ namespace FritzCallMonitor.Tests
 			var client = GetClient();
 
 			// Act & Assert
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
+			await client.StopAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			_socketMock.Verify(m => m.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true), Times.Once);
 
@@ -261,7 +260,7 @@ namespace FritzCallMonitor.Tests
 			var client = GetClient();
 
 			// Act & Assert
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
+			await client.StopAsync(TestContext.CancellationToken);
 
 			VerifyNoOtherCalls();
 		}
@@ -271,8 +270,8 @@ namespace FritzCallMonitor.Tests
 		{
 			// Arrange
 			var client = GetClient();
-			await client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			await client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 
 			// Act
 			var stream = client.GetStream();
@@ -317,10 +316,10 @@ namespace FritzCallMonitor.Tests
 			using var client = GetClient();
 
 			// Act
-			var startTask = client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			var startTask = client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
+			await client.StopAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			await startTask;
 
 			// Assert
@@ -350,10 +349,10 @@ namespace FritzCallMonitor.Tests
 				.ThrowsAsync(new SocketException());
 
 			// Act
-			var startTask = client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(1000, TestContext.CancellationTokenSource.Token); // Should try to connect two times.
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			var startTask = client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(1000, TestContext.CancellationToken); // Should try to connect two times.
+			await client.StopAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			await startTask;
 
 			// Assert
@@ -394,10 +393,10 @@ namespace FritzCallMonitor.Tests
 				.ThrowsAsync(new ObjectDisposedException("Test"));
 
 			// Act
-			var startTask = client.StartAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(1000, TestContext.CancellationTokenSource.Token); // Should try to connect two times.
-			await client.StopAsync(TestContext.CancellationTokenSource.Token);
-			await Task.Delay(ASYNC_DELAY, TestContext.CancellationTokenSource.Token);
+			var startTask = client.StartAsync(TestContext.CancellationToken);
+			await Task.Delay(1000, TestContext.CancellationToken); // Should try to connect two times.
+			await client.StopAsync(TestContext.CancellationToken);
+			await Task.Delay(ASYNC_DELAY, TestContext.CancellationToken);
 			await startTask;
 
 			// Assert
