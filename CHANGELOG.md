@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+_no changes yet_
+
+
+## [v0.1.3] - 2026-01-12
+
 ### Changed
 
 - Migrated main repository from Gitlab to Gitea (CI/CD)
@@ -47,8 +52,9 @@ _Inital release_
 
 
 
-[Unreleased]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.3...HEAD
 
+[v0.1.3]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.2...v0.1.3
 [v0.1.2]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.1...v0.1.2
 [v0.1.1]: https://github.com/AM-WD/FritzCallMonitor/compare/v0.1.0...v0.1.1
 [v0.1.0]: https://github.com/AM-WD/FritzCallMonitor/commits/v0.1.0
