@@ -39,6 +39,7 @@ jobs:
         run: |
           set -ex
           dotnet tool install dotnet-reportgenerator-globaltool --tool-path /dotnet-tools
+          dotnet tool install docfx --tool-path /dotnet-tools
 
       - name: Build solution
         run: |
