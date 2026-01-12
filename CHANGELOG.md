@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Migrated main repository from Gitlab to Gitea (CI/CD)
+- Updated to VS 2026
 
 
 ## [v0.1.2] - 2025-11-08

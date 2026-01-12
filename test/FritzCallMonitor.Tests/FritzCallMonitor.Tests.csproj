@@ -1,8 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <NoWarn>$(NoWarn);CA1873</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../MSTestSettings.cs" Link="MSTestSettings.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../../src/FritzCallMonitor/FritzCallMonitor.csproj" />
