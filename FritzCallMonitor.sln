@@ -21,7 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FritzCallMonitor.Tests", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3DF1F30A-77F3-4F24-8739-CB89EE07BB8B}"
 	ProjectSection(SolutionItems) = preProject
-		.gitlab-ci.yml = .gitlab-ci.yml
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
@@ -41,6 +40,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{B5851E79-4
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FritzCallMonitor.Demo", "src\FritzCallMonitor.Demo\FritzCallMonitor.Demo.csproj", "{6D718239-B477-4517-B8A5-9FBFCF3F3F2D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{9EB88C90-FBC7-4DB8-9484-DFC74553FF40}"
+	ProjectSection(SolutionItems) = preProject
+		.gitea\workflows\branch-build.yml = .gitea\workflows\branch-build.yml
+		.gitea\workflows\release-build.yml = .gitea\workflows\release-build.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +76,7 @@ Global
 		{6FA27A08-FCE1-405E-A4A4-3A89FF4579F3} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B5851E79-416B-40CA-959C-ADCAFCC8BADB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6D718239-B477-4517-B8A5-9FBFCF3F3F2D} = {C386CB98-2D60-4E40-B869-73053972BD28}
+		{9EB88C90-FBC7-4DB8-9484-DFC74553FF40} = {3DF1F30A-77F3-4F24-8739-CB89EE07BB8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68E37BBB-3CC2-4B0B-8093-7F2F56345EF3}

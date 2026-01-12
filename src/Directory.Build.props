@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <NrtRevisionFormat>{semvertag:main}{!:-dev}</NrtRevisionFormat>
+    <NrtContinuousIntegrationBuild>$(ContinuousIntegrationBuild)</NrtContinuousIntegrationBuild>
     <AssemblyOriginatorKeyFile>../../FritzCallMonitor.snk</AssemblyOriginatorKeyFile>
 
     <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
@@ -18,7 +19,6 @@
 
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>false</EmbedUntrackedSources>
 
     <Title>CallMonitor implementation for FRITZ!Box</Title>
     <Company>AM.WD</Company>
@@ -26,13 +26,14 @@
     <Copyright>© {copyright:2025-} AM.WD</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(GITLAB_CI)' == 'true'">
+  <PropertyGroup Condition="'$(CI)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(GITLAB_CI)' == 'true'">
-    <SourceLinkGitLabHost Include="$(CI_SERVER_HOST)" Version="$(CI_SERVER_VERSION)" />
-    <PackageReference Include="Microsoft.SourceLink.GitLab" Version="8.0.0">
+  <ItemGroup Condition="'$(CI)' == 'true'">
+    <SourceLinkGiteaHost Include="$(CI_SERVER_HOST)" />
+    <PackageReference Include="Microsoft.SourceLink.Gitea" Version="8.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -44,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AMWD.NetRevisionTask" Version="1.3.0">
+    <PackageReference Include="AMWD.NetRevisionTask" Version="1.4.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

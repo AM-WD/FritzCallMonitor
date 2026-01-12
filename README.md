@@ -18,7 +18,6 @@ To disable the call monitor, dial: `#96*4*`.
 
 Published under [MIT License] (see [choose a license]).
 
-[![Buy me a Coffee](https://shields.io/badge/PayPal-Buy_me_a_Coffee-yellow?style=flat&logo=paypal)](https://link.am-wd.de/donate)
 
 
 [MIT License]: LICENSE.txt
